@@ -74,7 +74,8 @@ func getIPsToNames(client dockerClienter, id string) (ipsToNamesMap, error) {
 		}
 
 		appendNames := func(names []string, name string) []string {
-			log.Debugf("found base name %s with IP %s", name, netInfo.IPAddress)
+			log.Debugf("found base name %s with IP %s", name, "127.0.0.1")
+			// log.Debugf("found base name %s with IP %s", name, netInfo.IPAddress)
 			names = append(names, fmt.Sprintf("%s", name))
 			names = maybeAppendNet(names, name)
 			if proj, ok := containerFull.Config.Labels["com.docker.compose.project"]; ok {
@@ -89,7 +90,7 @@ func getIPsToNames(client dockerClienter, id string) (ipsToNamesMap, error) {
 			names = appendNames(names, name)
 		}
 
-		ipsToNames[netInfo.IPAddress] = names
+		ipsToNames["127.0.0.1"] = names
 	}
 
 	return ipsToNames, nil
