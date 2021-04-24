@@ -54,13 +54,13 @@ func writeToEtcHosts(ipsToNames ipsToNamesMap, config ConfigSpec) error {
 			if len(tokens) < 1 {
 				continue // remove empty managed line
 			}
-			ip := tokens[0]
-			if names, ok := ipsToNames[ip]; ok {
-				err = writeEntryWithBanner(tmp, ip, names)
+			netName := tokens[1]
+			if names, ok := ipsToNames[netName]; ok {
+				err = writeEntryWithBanner(tmp, netName, names)
 				if err != nil {
 					return err
 				}
-				delete(ipsToNames, ip) // otherwise we'll append it again below
+				delete(ipsToNames, netName) // otherwise we'll append it again below
 			}
 		} else {
 			// keep original unmanaged line
@@ -87,11 +87,11 @@ func writeToEtcHosts(ipsToNames ipsToNamesMap, config ConfigSpec) error {
 	return nil
 }
 
-func writeEntryWithBanner(tmp io.Writer, ip string, names []string) error {
-	if ip != "" && len(names) > 0 {
-		log.Debugf("writing entry for %s (%s)", ip, names)
-		if _, err := fmt.Fprintf(tmp, "%s\n%s\t%s\n", banner, ip, strings.Join(names, " ")); err != nil {
-			return fmt.Errorf("error writing entry for %s: %s", ip, err)
+func writeEntryWithBanner(tmp io.Writer, netName string, names []string) error {
+	if netName != "" && len(netName) > 0 {
+		log.Debugf("writing entry for %s (%s) with ip %s", netName, names ,"127.0.0.1")
+		if _, err := fmt.Fprintf(tmp, "%s\n%s\t%s %s\n", banner, "127.0.0.1" , netName, strings.Join(names, " ")); err != nil {
+			return fmt.Errorf("error writing entry for %s: %s", netName, err)
 		}
 	}
 	return nil

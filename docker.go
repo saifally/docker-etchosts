@@ -90,7 +90,7 @@ func getIPsToNames(client dockerClienter, id string) (ipsToNamesMap, error) {
 			names = appendNames(names, name)
 		}
 
-		ipsToNames["127.0.0.1"] = names
+		ipsToNames[netName] = names
 	}
 
 	return ipsToNames, nil
